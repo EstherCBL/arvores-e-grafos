@@ -1,0 +1,89 @@
+Relatório Técnico
+
+1. Introdução
+
+Este relatório documenta a implementação, os testes e a análise de desempenho de seis algoritmos clássicos de ordenação escritos em linguagem C. O objetivo é oferecer uma visão comparativa clara entre abordagens de complexidade O(n²) e O(n log n), cobrindo aspectos como uso de memória, estabilidade e aplicabilidade prática.
+Todos os algoritmos recebem exatamente o mesmo conjunto de 20 inteiros desordenados, garantindo comparação justa. O tempo de execução é medido com a função clock() da biblioteca <time.h>, e os resultados são exibidos via um menu interativo em terminal.
+
+2. Implementação dos Algoritmos
+
+O código foi organizado em um único arquivo .c com funções independentes para cada algoritmo, wrappers para uniformizar assinaturas, e três utilitários compartilhados:
+• printArray(arr, n, label) — imprime o array antes e depois da ordenação
+• copyArray(src, dst, n) — preserva o dataset original intacto entre execuções
+• swap(a, b) — troca dois inteiros via ponteiros, reutilizada nos algoritmos
+
+2.1 Bubble Sort
+Percorre o array repetidamente, comparando pares adjacentes e trocando-os quando estão fora de ordem. A cada passagem completa, o maior elemento não-ordenado "borbulha" para sua posição final. A implementação inclui a flag swapped para encerrar antecipadamente caso o array já esteja ordenado, otimizando o caso melhor para O(n).
+
+for (i=0; i<n-1; i++) {
+    swapped = 0;
+    for (j=0; j<n-1-i; j++)
+        if (arr[j] > arr[j+1]) { swap(...); swapped=1; }
+    if (!swapped) break;  // array já ordenado
+}
+
+2.2 Selection Sort
+Divide o array em uma parte ordenada (esquerda) e outra não-ordenada (direita). A cada iteração, localiza o menor elemento da parte não-ordenada e o move para a posição seguinte da parte ordenada. Realiza no máximo n-1 trocas, tornando-o eficiente quando trocas têm custo elevado, embora as comparações permaneçam O(n²) independentemente da entrada.
+
+2.3 Insertion Sort
+Constrói a lista ordenada elemento por elemento, inserindo cada novo valor na posição correta dentro da parte já ordenada — análogo a organizar cartas em mãos. Excelente para arrays pequenos ou quase ordenados (O(n) no melhor caso) e amplamente utilizado como sub-rotina em algoritmos híbridos como o Timsort.
+
+2.4 Quick Sort
+Algoritmo de divisão e conquista que escolhe um pivô (último elemento na implementação), particiona o array de forma que os menores fiquem à esquerda e os maiores à direita, e ordena recursivamente cada partição. É o algoritmo de uso geral mais rápido na prática para dados aleatórios. O pior caso O(n²) ocorre com arrays já ordenados; estratégias como pivô aleatório ou mediana-de-três mitigam esse risco.
+Dois wrappers foram criados (quickSortWrapper e mergeSortWrapper) para uniformizar a assinatura func(arr[], n) exigida pelo ponteiro de função em runSort().
+
+2.5 Merge Sort
+Divide recursivamente o array ao meio até restar elementos unitários (que são trivialmente ordenados), depois intercala (merge) as metades de forma ordenada na recombinação. Garante O(n log n) em todos os casos e é estável, preservando a ordem relativa de elementos iguais. O custo é o uso de memória auxiliar O(n) alocada dinamicamente com malloc/free a cada chamada de merge.
+
+2.6 Shell Sort
+Generalização do Insertion Sort que usa gaps (espaçamentos) decrescentes para mover elementos distantes rapidamente, reduzindo o número de deslocamentos necessários na fase final. A sequência de gaps adotada é n/2, n/4, ..., 1 (sequência original de Shell). Quando gap = 1, o algoritmo se reduz a um Insertion Sort em um array quase-ordenado, que é muito eficiente. É in-place e não requer memória adicional.
+
+3. Resultados dos Testes
+
+3.1 Dataset utilizado
+O mesmo array de 20 inteiros foi fornecido a todos os algoritmos:
+{ 64, 34, 25, 12, 22, 11, 90, 5, 77, 43,
+  58, 19, 36, 81, 47,  3, 66, 29, 52,  8 }
+
+Resultado esperado (e obtido) após a ordenação:
+{ 3, 5, 8, 11, 12, 19, 22, 25, 29, 34,
+  36, 43, 47, 52, 58, 64, 66, 77, 81, 90 }
+
+Todos os seis algoritmos produziram exatamente esse resultado, comprovando a correção das implementações. O código foi compilado com GCC (-Wall) sem nenhum aviso ou erro.
+
+3.2 Comportamento observado
+Para 20 elementos, todos os algoritmos executaram em menos de 0,01 ms — abaixo da resolução do clock() em alguns sistemas. As diferenças de tempo só se tornam significativas com datasets maiores (ordem de milhares ou milhões de elementos). A tabela abaixo resume o comportamento teórico e prático de cada algoritmo:
+
+4. Comparação de Desempenho
+
+Algoritmo       	 Melhor	   Médio	Pior	 Espaço	 Estável   Uso
+Bubble Sort	          O(n)	   O(n²)	O(n²)	  O(1)	   Sim	  Baixo   
+Selection Sort	     O(n²)	   O(n²)	O(n²)	  O(1)	   Não	  Baixo
+Insertion Sort	      O(n)	   O(n²)	O(n²)	  O(1)	   Sim	  Baixo
+Quick Sort	     O(n logn) O(n logn)	O(n²)	O(logn)	   Não	   Alto
+Merge Sort	     O(n logn) O(n logn)  O(n logn)	  O(n)	   Sim	   Alto
+Shell Sort	     O(n logn) O(n log²n)	O(n²)	  O(1)	   Não	  Médio
+
+4.1 Análise por categoria
+
+Algoritmos O(n²) — Simples, adequados para n pequeno
+Bubble Sort, Selection Sort e Insertion Sort compartilham complexidade quadrática no caso médio e pior. Insertion Sort se destaca ao degradar para O(n) em arrays quase ordenados, tornando-o o mais eficiente do grupo para entradas parcialmente ordenadas. Selection Sort realiza o menor número de trocas (no máximo n-1), vantagem quando operações de escrita são custosas. Bubble Sort, apesar de simples, tende a ser o mais lento em geral pelo alto volume de trocas.
+
+Algoritmos O(n log n) — Escaláveis para grandes volumes
+Quick Sort, Merge Sort e Shell Sort oferecem desempenho superior para datasets grandes. Quick Sort é geralmente o mais rápido na prática devido à boa localidade de cache e ao baixo overhead constante, mas pode degradar para O(n²) no pior caso. Merge Sort é o único que garante O(n log n) em todos os casos, sendo ideal quando estabilidade e previsibilidade são prioridade, ao custo de memória extra O(n). Shell Sort representa um meio-termo: in-place como os algoritmos simples, porém com desempenho muito melhor que O(n²) na prática.
+
+4.2 Recomendações por cenário de uso
+
+Cenário	                                    Recomendação
+Array pequeno (< 20)	-> Insertion Sort — mínimo overhead, eficiente para n pequeno
+Array quase ordenado	-> Insertion / Bubble Sort — O(n) no melhor caso
+Uso geral de alta perf.	-> Quick Sort — melhor desempenho prático na maioria dos casos
+Estabilidade necessária	-> Merge Sort — garante O(n log n) e preserva a ordem relativa
+Memória restrita	    -> Shell Sort ou Heap Sort — in-place com bom desempenho médio
+Fins didáticos	        -> Bubble / Selection Sort — código simples e de fácil compreensão
+
+5. Conclusão
+A implementação dos seis algoritmos em C demonstrou tanto a correção lógica de cada abordagem quanto as diferenças fundamentais entre as estratégias de ordenação. Com 20 elementos, todos apresentaram tempo de execução negligenciável; as vantagens dos algoritmos O(n log n) se evidenciariam com datasets de milhares de elementos ou mais.
+Do ponto de vista de aprendizado, o exercício evidencia como escolhas de design — uso de memória auxiliar, estabilidade, adaptabilidade à entrada — resultam em trocas (trade-offs) que definem a adequação de cada algoritmo a diferentes contextos reais.
+Para aplicações de produção em C, recomenda-se qsort() da stdlib.h (baseada em Quick Sort híbrido) ou implementações como Timsort (Insertion Sort + Merge Sort), que combinam o melhor de múltiplos algoritmos dependendo do perfil da entrada.
+
