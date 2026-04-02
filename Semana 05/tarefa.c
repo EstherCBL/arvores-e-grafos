@@ -3,9 +3,11 @@
 
 int comparacoes = 0, trocas = 0;
 
-void exibirArray(int arr[], int n) {
+void exibirArray(int arr[], int n)
+{
     printf("\nEstrutura atual: ");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         printf("%d ", arr[i]);
     }
     printf("\n");
@@ -13,13 +15,17 @@ void exibirArray(int arr[], int n) {
 
 // -------------------------------------------------------------
 
-void bubbleSort(int arr[], int n) {
+void bubbleSort(int arr[], int n)
+{
     int temp, trocou;
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < n - 1; i++)
+    {
         trocou = 0;
-        for (int j = 0; j < n - 1; j++) {
+        for (int j = 0; j < n - 1; j++)
+        {
             comparacoes++;
-            if (arr[j] > arr[j + 1]) {
+            if (arr[j] > arr[j + 1])
+            {
                 temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
@@ -27,7 +33,8 @@ void bubbleSort(int arr[], int n) {
                 trocou = 1;
             }
         }
-        if (trocou == 0) {
+        if (trocou == 0)
+        {
             break;
         }
     }
@@ -35,17 +42,22 @@ void bubbleSort(int arr[], int n) {
 
 // -------------------------------------------------------------
 
-void selectionSort(int arr[], int n) {
+void selectionSort(int arr[], int n)
+{
     int temp = 0;
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < n - 1; i++)
+    {
         int min_idx = i;
-        for (int j = i + 1; j < n; j++) {
+        for (int j = i + 1; j < n; j++)
+        {
             comparacoes++;
-            if (arr[j] < arr[min_idx]) {
+            if (arr[j] < arr[min_idx])
+            {
                 min_idx = j;
             }
         }
-        if (min_idx != i) {
+        if (min_idx != i)
+        {
             temp = arr[i];
             arr[i] = arr[min_idx];
             arr[min_idx] = temp;
@@ -56,12 +68,15 @@ void selectionSort(int arr[], int n) {
 
 // -------------------------------------------------------------
 
-void insertionSort(int arr[], int n) {
+void insertionSort(int arr[], int n)
+{
     int key, j;
-    for (int i = 1; i < n; i++) {
+    for (int i = 1; i < n; i++)
+    {
         key = arr[i];
         j = i - 1;
-        while (j >= 0 && arr[j] > key) {
+        while (j >= 0 && arr[j] > key)
+        {
             comparacoes++;
             trocas++;
             arr[j + 1] = arr[j];
@@ -74,7 +89,8 @@ void insertionSort(int arr[], int n) {
 
 // -------------------------------------------------------------
 
-void merge(int arr[], int l, int m, int r) {
+void merge(int arr[], int l, int m, int r)
+{
     int n1 = m - l + 1;
     int n2 = r - m;
 
@@ -89,33 +105,41 @@ void merge(int arr[], int l, int m, int r) {
 
     int i = 0, j = 0, k = l;
 
-    while (i < n1 && j < n2) {
+    while (i < n1 && j < n2)
+    {
         comparacoes++;
-        if (L[i] <= R[j]) {
+        if (L[i] <= R[j])
+        {
             arr[k] = L[i];
             i++;
-        } else {
+        }
+        else
+        {
             arr[k] = R[j];
             j++;
         }
         k++;
     }
 
-    while (i < n1) {
+    while (i < n1)
+    {
         arr[k] = L[i];
         i++;
         k++;
     }
 
-    while (j < n2) {
+    while (j < n2)
+    {
         arr[k] = R[j];
         j++;
         k++;
     }
 }
 
-void mergeSort(int arr[], int l, int r) {
-    if (l < r) {
+void mergeSort(int arr[], int l, int r)
+{
+    if (l < r)
+    {
         int m = l + (r - l) / 2;
 
         mergeSort(arr, l, m);
@@ -127,19 +151,23 @@ void mergeSort(int arr[], int l, int r) {
 
 // -------------------------------------------------------------
 
-void swap(int arr[], int i, int j) {
+void swap(int arr[], int i, int j)
+{
     trocas++;
     int temp = arr[i];
     arr[i] = arr[j];
     arr[j] = temp;
 }
 
-int partition(int arr[], int low, int high) {
+int partition(int arr[], int low, int high)
+{
     int pivot = arr[high];
     int i = (low - 1);
-    for (int j = low; j <= high - 1; j++) {
+    for (int j = low; j <= high - 1; j++)
+    {
         comparacoes++;
-        if (arr[j] < pivot) {
+        if (arr[j] < pivot)
+        {
             i++;
             swap(arr, i, j);
         }
@@ -148,8 +176,10 @@ int partition(int arr[], int low, int high) {
     return (i + 1);
 }
 
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
         int pi = partition(arr, low, high);
         quickSort(arr, low, pi - 1);
         quickSort(arr, pi + 1, high);
@@ -158,14 +188,18 @@ void quickSort(int arr[], int low, int high) {
 
 // -------------------------------------------------------------
 
-void shellSort(int arr[], int n) {
-    for (int gap = n / 2; gap > 0; gap /= 2) {
+void shellSort(int arr[], int n)
+{
+    for (int gap = n / 2; gap > 0; gap /= 2)
+    {
 
-        for (int i = gap; i < n; i++) {
+        for (int i = gap; i < n; i++)
+        {
             int temp = arr[i];
             int j = i;
 
-            while (j >= gap && arr[j - gap] > temp) {
+            while (j >= gap && arr[j - gap] > temp)
+            {
                 comparacoes++;
                 trocas++;
                 arr[j] = arr[j - gap];
@@ -179,7 +213,8 @@ void shellSort(int arr[], int n) {
 
 // -------------------------------------------------------------
 
-void organizarSubarvore(int vet[], int tamanho, int indiceRaiz) {
+void organizarSubarvore(int vet[], int tamanho, int indiceRaiz)
+{
     int maior = indiceRaiz;
     int esquerda = 2 * indiceRaiz + 1;
     int direita = 2 * indiceRaiz + 2;
@@ -192,7 +227,8 @@ void organizarSubarvore(int vet[], int tamanho, int indiceRaiz) {
     if (direita < tamanho && vet[direita] > vet[maior])
         maior = direita;
 
-    if (maior != indiceRaiz) {
+    if (maior != indiceRaiz)
+    {
         trocas++;
         int aux = vet[indiceRaiz];
         vet[indiceRaiz] = vet[maior];
@@ -202,12 +238,15 @@ void organizarSubarvore(int vet[], int tamanho, int indiceRaiz) {
     }
 }
 
-void heapSort(int vet[], int n) {
-    for (int i = n / 2 - 1; i >= 0; i--) {
+void heapSort(int vet[], int n)
+{
+    for (int i = n / 2 - 1; i >= 0; i--)
+    {
         organizarSubarvore(vet, n, i);
     }
 
-    for (int i = n - 1; i > 0; i--) {
+    for (int i = n - 1; i > 0; i--)
+    {
         trocas++;
         int aux = vet[0];
         vet[0] = vet[i];
@@ -219,7 +258,8 @@ void heapSort(int vet[], int n) {
 
 // -------------------------------------------------------------
 
-int main() {
+int main()
+{
     clock_t inicio, fim;
     double tempo_s;
     int arr[2000];
@@ -229,11 +269,13 @@ int main() {
 
     printf("O array já contém números múltiplos de 10 de 0 até 10000 para adicionar complexidade à execução dos algoritmos.\n\n");
 
-    for (int i = 0; i <= 10000; i+=10) {
+    for (int i = 0; i <= 10000; i += 10)
+    {
         arr[totalElementos++] = i;
     }
 
-    while (controle != 0) {
+    while (controle != 0)
+    {
         comparacoes = 0;
         trocas = 0;
         tempo_s = 0;
@@ -245,128 +287,137 @@ int main() {
         printf("Escolha uma opção: ");
         scanf("%d", &controle);
 
-        switch (controle) {
+        switch (controle)
+        {
 
-            case 0:
-                printf("Programa Finalizado.\n");
-                break;
+        case 0:
+            printf("Programa Finalizado.\n");
+            break;
 
-            case 1:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Bubble Sort ===");
-                    inicio = clock();
-                    bubbleSort(arr, totalElementos);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Bubble Sort:\n");
-                printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
-                break;
+        case 1:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Bubble Sort ===");
+                inicio = clock();
+                bubbleSort(arr, totalElementos);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Bubble Sort:\n");
+            printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
+            break;
 
-            case 2:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Selection Sort ===");
-                    inicio = clock();
-                    selectionSort(arr, totalElementos);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Selection Sort:\n");
-                printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
-                break;
+        case 2:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Selection Sort ===");
+                inicio = clock();
+                selectionSort(arr, totalElementos);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Selection Sort:\n");
+            printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
+            break;
 
-            case 3:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Insertion Sort ===");
-                    inicio = clock();
-                    insertionSort(arr, totalElementos);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Insertion Sort:\n");
-                printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
-                break;
+        case 3:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Insertion Sort ===");
+                inicio = clock();
+                insertionSort(arr, totalElementos);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Insertion Sort:\n");
+            printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
+            break;
 
-            case 4:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Quick Sort ===");
-                    inicio = clock();
-                    quickSort(arr, 0, totalElementos - 1);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Quick Sort:\n");
-                printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
-                break;
+        case 4:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Quick Sort ===");
+                inicio = clock();
+                quickSort(arr, 0, totalElementos - 1);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Quick Sort:\n");
+            printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
+            break;
 
-            case 5:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Merge Sort ===");
-                    inicio = clock();
-                    mergeSort(arr, 0, totalElementos - 1);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Merge Sort:\n");
-                printf("Nº de trocas: N/A\nNº de comparações: %d\nTempo de execução (s): %.9f", comparacoes, tempo_s);
-                break;
+        case 5:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Merge Sort ===");
+                inicio = clock();
+                mergeSort(arr, 0, totalElementos - 1);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Merge Sort:\n");
+            printf("Nº de trocas: N/A\nNº de comparações: %d\nTempo de execução (s): %.9f", comparacoes, tempo_s);
+            break;
 
-            case 6:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Shell Sort ===");
-                    inicio = clock();
-                    shellSort(arr, totalElementos);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Shell Sort:\n");
-                printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
-                break;
+        case 6:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Shell Sort ===");
+                inicio = clock();
+                shellSort(arr, totalElementos);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Shell Sort:\n");
+            printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
+            break;
 
-            case 7:
-                for (int i = 0; i < totalValores; i++) {
-                    printf("\nDigite o valor: ");
-                    scanf("%d", &arr[totalElementos]);
-                    totalElementos++;
-                    printf("\n=== Executando Heap Sort ===");
-                    inicio = clock();
-                    heapSort(arr, totalElementos);
-                    fim = clock();
-                    tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
-                    exibirArray(arr, totalElementos);
-                }
-                printf("\nResultado Heap Sort:\n");
-                printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
-                break;
+        case 7:
+            for (int i = 0; i < totalValores; i++)
+            {
+                printf("\nDigite o valor: ");
+                scanf("%d", &arr[totalElementos]);
+                totalElementos++;
+                printf("\n=== Executando Heap Sort ===");
+                inicio = clock();
+                heapSort(arr, totalElementos);
+                fim = clock();
+                tempo_s += (double)(fim - inicio) / CLOCKS_PER_SEC;
+                exibirArray(arr, totalElementos);
+            }
+            printf("\nResultado Heap Sort:\n");
+            printf("Nº de trocas: %d\nNº de comparações: %d\nTempo de execução (s): %.9f", trocas, comparacoes, tempo_s);
+            break;
 
-            default:
-                printf("Opção inválida.\n");
+        default:
+            printf("Opção inválida.\n");
         }
-        if (controle != 0) {
+        if (controle != 0)
+        {
             exibirArray(arr, totalElementos);
             printf("\n");
         }
